@@ -27,8 +27,11 @@ class DogsController < ApplicationController
     @dog = Dog.new(dog_params)
 
     respond_to do |format|
-      if @dog.save
-        @dog.images.attach(params[:dog][:image]) if params[:dog][:image].present?
+			if @dog.save
+
+				if params[:dog][:image].present?
+					@dog.images.attach(*params[:dog][:image])
+				end
 
         format.html { redirect_to @dog, notice: 'Dog was successfully created.' }
         format.json { render :show, status: :created, location: @dog }
@@ -43,8 +46,11 @@ class DogsController < ApplicationController
   # PATCH/PUT /dogs/1.json
   def update
     respond_to do |format|
-      if @dog.update(dog_params)
-        @dog.images.attach(params[:dog][:image]) if params[:dog][:image].present?
+			if @dog.update(dog_params)
+
+				if params[:dog][:image].present?
+					@dog.images.attach(*params[:dog][:image])
+				end
 
         format.html { redirect_to @dog, notice: 'Dog was successfully updated.' }
         format.json { render :show, status: :ok, location: @dog }
