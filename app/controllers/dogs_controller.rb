@@ -4,7 +4,7 @@ class DogsController < ApplicationController
   # GET /dogs
   # GET /dogs.json
   def index
-    @dogs = Dog.all
+		@dogs = Dog.page(params[:page]).per(5)
   end
 
   # GET /dogs/1
@@ -63,8 +63,8 @@ class DogsController < ApplicationController
       format.html { redirect_to dogs_url, notice: 'Dog was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
+	end
+	
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_dog
