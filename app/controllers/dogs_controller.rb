@@ -23,23 +23,25 @@ class DogsController < ApplicationController
 
   # POST /dogs
   # POST /dogs.json
-  def create
-		@dog = Dog.new(dog_params)
-		@dog.owner = current_user.id;
+	def create
+		if current_user
+			@dog = Dog.new(dog_params)
+			@dog.owner = current_user.id;
 
-    respond_to do |format|
-			if @dog.save
+			respond_to do |format|
+				if @dog.save
 
-				if params[:dog][:image].present?
-					@dog.images.attach(*params[:dog][:image])
+					if params[:dog][:image].present?
+						@dog.images.attach(*params[:dog][:image])
+					end
+
+					format.html { redirect_to @dog, notice: 'Dog was successfully created.' }
+					format.json { render :show, status: :created, location: @dog }
+				else
+					format.html { render :new }
+					format.json { render json: @dog.errors, status: :unprocessable_entity }
 				end
-
-        format.html { redirect_to @dog, notice: 'Dog was successfully created.' }
-        format.json { render :show, status: :created, location: @dog }
-      else
-        format.html { render :new }
-        format.json { render json: @dog.errors, status: :unprocessable_entity }
-      end
+			end
     end
   end
 
@@ -47,7 +49,7 @@ class DogsController < ApplicationController
   # PATCH/PUT /dogs/1.json
   def update
 		respond_to do |format|
-			if @dog.owner == current_user.id 
+			if current_user && @dog.owner == current_user.id 
 				if @dog.update(dog_params)
 
 					if params[:dog][:image].present?

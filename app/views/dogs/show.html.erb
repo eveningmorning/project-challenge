@@ -7,7 +7,19 @@
 
   <p><%= @dog.description %></p>
 
-  <% if @dog.owner == current_user.id %>
+  <p><%= @dog.likes.count %> likes</p>
+
+  <a>
+    <% if current_user && current_user.likes.where(dog_id: @dog.id).exists? %>
+      <div> 
+        <%= button_to "Unlike", like_path, method: :delete %>
+      </div>
+    <% elsif current_user && @dog.owner != current_user.id %>
+      <%= button_to "Like", likes_path(:dog_id => params[:id]), method: :post %>
+    <% end %>
+  <a>
+
+  <% if current_user && @dog.owner == current_user.id %>
     <%= link_to "Edit #{@dog.name}'s Profile", edit_dog_path %>
     <br>
     <%= link_to "Delete #{@dog.name}'s Profile", dog_path, method: :delete, data: { confirm: 'Are you sure?' } %>
