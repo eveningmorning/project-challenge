@@ -4,7 +4,11 @@ class DogsController < ApplicationController
   # GET /dogs
   # GET /dogs.json
   def index
-		@dogs = Dog.page(params[:page]).per(5)
+    if params[:sort] == 'default'
+        @dogs = Dog.page(params[:page]).per(5)
+    else 
+        @dogs = Dog.joins(:likes).select('dogs.*, COUNT(likes.id) as likes_count').group('dogs.id').order('likes_count DESC').page(params[:page]).per(5)
+    end
   end
 
   # GET /dogs/1

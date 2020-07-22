@@ -12,7 +12,10 @@
   <body>
     <div id="layout">
       <header>
-        <h1><%= link_to 'Dog Profile Demo', root_path %></h1>
+        <h1><%= link_to 'Dog Profile Demo', root_path(:sort => 'default') %></h1>
+            <div>
+                <%= link_to 'Sort by popular', root_path(:sort => 'popular') %>
+            </div>
         <div class="actions">
           <% if current_user %>
             <%= link_to 'Add your dog', new_dog_path %>
