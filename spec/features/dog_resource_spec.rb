@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe 'Dog resource', type: :feature do
+  # need to update test to include user login
   it 'can create a profile' do
     visit new_dog_path
     fill_in 'Name', with: 'Speck'
