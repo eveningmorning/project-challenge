@@ -5,9 +5,9 @@ class DogsController < ApplicationController
   # GET /dogs.json
   def index
     if params[:sort] == 'popular'
-        @dogs = Dog.joins(:likes).select('dogs.*, COUNT(likes.id) as likes_count').group('dogs.id').order('likes_count DESC').page(params[:page]).per(5)
+      @dogs = Dog.joins(:likes).select('dogs.*, COUNT(likes.id) as likes_count').group('dogs.id').order('likes_count DESC').page(params[:page]).per(5)
     else    
-        @dogs = Dog.page(params[:page]).per(5)
+      @dogs = Dog.page(params[:page]).per(5)
     end
   end
 
